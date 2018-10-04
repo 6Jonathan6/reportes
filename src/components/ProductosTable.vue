@@ -129,15 +129,13 @@ export default {
         };
         const response = fuzzysort.goAsync(text, objects, options);
         response.then(results => {
-          results.forEach;
-          vm.showProducts = result.map(array => array.obj);
+          vm.showProducts = results.map(result => result.obj);
         });
       }
     },
     todosFilter() {
       this.activeTodosButton();
       this.filteredProducts = this.productos;
-      this.showProducts = this.filteredProducts;
       this.search();
     },
     dpoFilter() {
