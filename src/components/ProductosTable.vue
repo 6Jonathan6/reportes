@@ -127,8 +127,11 @@ export default {
           threshold: -10000,
           keys: ["clave", "nombre"]
         };
-        const result = fuzzysort.go(text, objects, options);
-        vm.showProducts = result.map(array => array.obj);
+        const response = fuzzysort.goAsync(text, objects, options);
+        response.then(results => {
+          results.forEach;
+          vm.showProducts = result.map(array => array.obj);
+        });
       }
     },
     todosFilter() {
