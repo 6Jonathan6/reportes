@@ -123,7 +123,7 @@
 </template>
 <script>
 export default {
-  name: "ProductComponent.vue",
+  name: "ProductComponent",
   props: {
     producto: {
       type: Object,
