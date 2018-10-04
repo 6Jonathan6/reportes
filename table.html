@@ -1,0 +1,44 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <style>
+        .reporte-inventario-container:{
+            width: 100%;
+            max-width: 1440px;
+            border: 1px solid;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="father">
+        <article class="reporte-invtentario-container">
+            <header>Reporte de Reorden De inventarios</header>
+            <main>
+                <div class="searchbar-and-filter-button-container">
+                    <form class="search-bar-form">
+                        <fieldset>
+                            <legend>Search Bar</legend>
+                            <ul>
+                                <label for="search-bar-input">Buscar</label>
+                                <li><input type="text" id="search-bar-input" class="search-bar-input" placeholder="Nombre o código"></li>
+                            </ul>
+                        </fieldset>
+                    </form>
+                    <div class="filter-buttons-container">
+                        <ul>
+                            <li><button>Todos</button></li>
+                            <li><button>Debajo del punto de reorden</button></li>
+                            <li><button>Debajo del mínimo</button></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="excel-button-container">
+                    <button>EXCEL</button>
+                </div>
+            </main>
+        </article>
+    </div>
+</body>
