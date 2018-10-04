@@ -135,27 +135,28 @@ export default {
       this.activeTodosButton();
       this.filteredProducts = this.productos;
       this.showProducts = this.filteredProducts;
+      this.search();
     },
     dpoFilter() {
       this.activeDpoButton();
       this.filteredProducts = this.productos.filter(producto => {
         return producto.cantidad < producto.porden;
       });
-      this.showProducts = this.filteredProducts;
+      this.search();
     },
     dminFilter() {
       this.activeDminButton();
       this.filteredProducts = this.productos.filter(producto => {
         return producto.cantidad < producto.minimo;
       });
-      this.showProducts = this.filteredProducts;
+      this.search();
     },
     negativeFilter() {
       this.activeNegativeButton();
       this.filteredProducts = this.productos.filter(producto => {
         return producto.cantidad < 0;
       });
-      this.showProducts = this.filteredProducts;
+      this.search();
     },
     activeTodosButton() {
       this.isTodosActive = true;
