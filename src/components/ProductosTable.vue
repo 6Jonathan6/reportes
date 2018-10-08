@@ -8,7 +8,7 @@
         </div>
         <div class="col-lg-12">
             <div class="row mx-0 tool inventory py-1">
-                <div class="col-lg-4 col-12 px-0 search d-flex"><input class="form-control" placeholder="Nombre o código" @input="search" v-model="searchInput"><i
+                <div class="col-lg-4 col-12 px-0 search d-flex"><input class="form-control" placeholder="Nombre o código" @input="search" v-model="searchInput" autofocus><i
                         class="fa fa-search" aria-hidden="true"></i></div>
                 <div class="col-lg-8 col-12 px-0 text-lg-right mt-lg-0 mt-2">
                     <div :class="todosComputedClass" @click="todosFilter">Todos</div>
@@ -49,7 +49,7 @@
             <div class="content_modalbox_tables">
                 <div class="ranges-table">
         <!-- PRODUCT.VUE -->
-                    <product-component :producto="producto" v-for="(producto,id) in  computedShowProducts" :key="id" ></product-component>
+                    <product-component :producto="producto" v-for="producto in  computedShowProducts" :key="producto.key" ></product-component>
                 </div>
             </div>
         </div>
@@ -58,15 +58,14 @@
 </div>
 </template>
 <script>
-import { productos } from "../../productos.js";
+import { filteredProducts } from "../../productos.api.js";
 import ProductComponent from "./ProductComponent.vue";
 import * as fuzzysort from "fuzzysort";
 export default {
   name: "ProductosTable",
   data() {
     return {
-      productos: productos.productos,
-      filteredProducts: productos.productos,
+      products: [],
       showProducts: null,
       activeButtonsClassObject: {
         btn: true,
@@ -88,9 +87,6 @@ export default {
   computed: {
     computedShowProducts() {
       return this.showProducts;
-    },
-    computedFilteredProducts() {
-      return this.filteredProducts;
     },
     todosComputedClass() {
       return this.isTodosActive
@@ -117,10 +113,11 @@ export default {
     search() {
       const vm = this;
       const text = this.searchInput;
+      vm.activeTodosButton();
       if (!text || text === "" || text.lenght < 3) {
-        vm.showProducts = vm.computedFilteredProducts;
+        vm.showProducts = vm.products;
       } else {
-        const objects = this.computedFilteredProducts;
+        const objects = vm.products;
         const options = {
           limit: 100,
           allowTypo: false,
@@ -135,29 +132,27 @@ export default {
     },
     todosFilter() {
       this.activeTodosButton();
-      this.filteredProducts = this.productos;
       this.search();
     },
     dpoFilter() {
       this.activeDpoButton();
-      this.filteredProducts = this.productos.filter(producto => {
+      this.searchInput = null;
+      this.showProducts = this.products.filter(producto => {
         return producto.cantidad < producto.porden;
       });
-      this.search();
     },
     dminFilter() {
       this.activeDminButton();
-      this.filteredProducts = this.productos.filter(producto => {
+      this.showProducts = this.products.filter(producto => {
         return producto.cantidad < producto.minimo;
       });
-      this.search();
+      // this.search();
     },
     negativeFilter() {
       this.activeNegativeButton();
-      this.filteredProducts = this.productos.filter(producto => {
+      this.showProducts = this.products.filter(producto => {
         return producto.cantidad < 0;
       });
-      this.search();
     },
     activeTodosButton() {
       this.isTodosActive = true;
@@ -185,10 +180,16 @@ export default {
     }
   },
   created() {
-    this.showProducts = this.filteredProducts;
+    this.products = filteredProducts.map(product => product.product);
+    this.showProducts = this.products;
   },
   components: {
     ProductComponent
   }
 };
 </script>
+<style scoped>
+.row:hover {
+  background-color: #f3f3f3;
+}
+</style>

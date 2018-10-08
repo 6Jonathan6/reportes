@@ -4,8 +4,8 @@
                     <table class="table small no-border no-hover table-400">
                         <tbody>
                             <tr>
-                                <td>{{producto.clave}}</td>
-                                <td class="absorbing-column">{{producto.nombre}}</td>
+                                <td>{{product.key}}</td>
+                                <td class="absorbing-column">{{product.name}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -18,7 +18,7 @@
                                 <!-- Negative range -->
                                 <td :class="isNegativeObject" >
                                     <div class="line negative one">
-                                        <div class="number negative">{{producto.cantidad}}</div>
+                                        <div class="number negative">{{product.quantity}}</div>
                                     </div>
                                 </td>
 
@@ -26,7 +26,7 @@
                                 <!-- After negative  0 < cantidad < minimo -->
                                 <td class="px-0 range long"   v-if="isPositiveAndLessThanMinimum">
                                     <div class="line negative first">
-                                        <div class="number">{{  producto.cantidad }}</div>
+                                        <div class="number">{{  product.quantity }}</div>
                                     </div>
                                 </td>
 
@@ -39,7 +39,7 @@
                                 <!-- minimo circle -->
                                 <td class="px-0 range index">
                                     <div class="index">
-                                        <div class="number">{{producto.minimo}}</div>
+                                        <div class="number">{{product.minimun_stock}}</div>
                                     </div>
                                 </td>
 
@@ -47,7 +47,7 @@
                                 <!-- minimo < cantidad < punto reorden -->
                                 <td class="px-0 range" v-if="isGreaterThanMinAndLesThanPo">
                                     <div class="line warning">
-                                        <div class="number">{{producto.cantidad}}</div>
+                                        <div class="number">{{product.quantity}}</div>
                                     </div>
                                 </td>
                                 <td class="px-0 range" v-if="isGreaterThanMinAndLesThanPo">
@@ -66,7 +66,7 @@
                                 <!-- Markup for porden circle porden=punto de reorden -->
                                 <td class="px-0 range index">
                                     <div class="index">
-                                        <div class="number">{{producto.porden}}</div>
+                                        <div class="number">{{product.reorder_point}}</div>
                                     </div>
                                 </td>
 
@@ -74,7 +74,7 @@
                                 <!-- porden < cantidad < maximo -->
                                 <td class="px-0 range" v-if="isGreaterThanPoAndLessThanMax">
                                     <div class="line positive">
-                                        <div class="number">{{producto.cantidad}}</div>
+                                        <div class="number">{{product.quantity}}</div>
                                     </div>
                                 </td>
                                 <td class="px-0 range" v-if="isGreaterThanPoAndLessThanMax">
@@ -93,7 +93,7 @@
                                 <!-- Maximo circle -->
                                 <td class="px-0 range index">
                                     <div class="index">
-                                        <div class="number">{{producto.maximo}}</div>
+                                        <div class="number">{{product.maximun_stock}}</div>
                                     </div>
                                 </td>
 
@@ -101,7 +101,7 @@
                                 <!-- maximo < cantidad -->
                                 <td class="px-0 range" v-if="isGreaterThanMax">
                                     <div class="line positive max">
-                                        <div class="number">{{producto.cantidad}}</div>
+                                        <div class="number">{{product.quantity}}</div>
                                     </div>
                                 </td>
                                 <td class="px-0 range" v-if="isGreaterThanMax">
@@ -125,7 +125,7 @@
 export default {
   name: "ProductComponent",
   props: {
-    producto: {
+    product: {
       type: Object,
       required: true
     }
@@ -146,27 +146,29 @@ export default {
   },
   computed: {
     isNegativeObject() {
-      const isNegative = this.producto.cantidad < 0;
+      const isNegative = this.product.quantity < 0;
       return isNegative ? this.negativeObject : this.positiveObject;
     },
     isPositiveAndLessThanMinimum() {
-      const isPositive = 0 < this.producto.cantidad;
-      const isLessThanMinimum = this.producto.cantidad < this.producto.minimo;
+      const isPositive = 0 < this.product.quantity;
+      const isLessThanMinimum =
+        this.product.quantity < this.product.minimun_stock;
       return isPositive && isLessThanMinimum;
     },
     isGreaterThanMinAndLesThanPo() {
       const isGreaterThanMinimum =
-        this.producto.minimo < this.producto.cantidad;
-      const isLessThanPo = this.producto.cantidad < this.producto.porden;
+        this.product.minimun_stock < this.product.quantity;
+      const isLessThanPo = this.product.quantity < this.product.reorder_point;
       return isGreaterThanMinimum && isLessThanPo;
     },
     isGreaterThanPoAndLessThanMax() {
-      const isGreaterThanPo = this.producto.porden < this.producto.cantidad;
-      const isLessThanMax = this.producto.cantidad < this.producto.maximo;
+      const isGreaterThanPo =
+        this.product.reorder_point < this.product.quantity;
+      const isLessThanMax = this.product.quantity < this.product.maximun_stock;
       return isGreaterThanPo && isLessThanMax;
     },
     isGreaterThanMax() {
-      return this.producto.cantidad > this.producto.maximo;
+      return this.product.quantity > this.product.maximun_stock;
     }
   }
 };
