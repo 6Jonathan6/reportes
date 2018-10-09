@@ -91,7 +91,7 @@ describe("Testing computed properties while todos filter is active", () => {
   });
 });
 
-describe("Testing compoenent methods which change the dependencies of <button>ComputedClass properties, e.g gegativeComputedClass", () => {
+describe("Testing component methods which change the dependencies of <button>ComputedClass properties, e.g gegativeComputedClass", () => {
   let wrapper, activeButtonClassObject;
   beforeEach(() => {
     wrapper = shallowMount(ProductsTable);
