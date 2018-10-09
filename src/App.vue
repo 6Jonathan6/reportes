@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ProductosTable from "./components/ProductosTable.vue";
+import ProductosTable from "./components/ProductsTable.vue";
 
 export default {
   name: "app",

@@ -8,7 +8,7 @@
         </div>
         <div class="col-lg-12">
             <div class="row mx-0 tool inventory py-1">
-                <div class="col-lg-4 col-12 px-0 search d-flex"><input class="form-control" placeholder="Nombre o código" @input="search" v-model="searchInput" autofocus><i
+                <div class="col-lg-4 col-12 px-0 search d-flex"><input class="form-control" placeholder="Nombre o código" ref="searchbar" @input="search" v-model="searchInput" autofocus><i
                         class="fa fa-search" aria-hidden="true"></i></div>
                 <div class="col-lg-8 col-12 px-0 text-lg-right mt-lg-0 mt-2">
                     <div :class="todosComputedClass" @click="todosFilter">Todos</div>
@@ -49,10 +49,10 @@
             <div class="content_modalbox_tables">
                 <div class="ranges-table">
         <!-- PRODUCT.VUE -->
-                    <product-component :producto="producto" v-for="producto in  computedShowProducts" :key="producto.key" ></product-component>
+                    <product-component :product="product" v-for="product in computedShowProducts" :key="product.key" ></product-component>
                 </div>
             </div>
-        </div>
+        </div>  
 
     </div>
 </div>
@@ -65,7 +65,7 @@ export default {
   name: "ProductosTable",
   data() {
     return {
-      products: [],
+      products: null,
       showProducts: null,
       activeButtonsClassObject: {
         btn: true,
@@ -122,7 +122,7 @@ export default {
           limit: 100,
           allowTypo: false,
           threshold: -10000,
-          keys: ["clave", "nombre"]
+          keys: ["key", "name"]
         };
         const response = fuzzysort.goAsync(text, objects, options);
         response.then(results => {
@@ -137,21 +137,21 @@ export default {
     dpoFilter() {
       this.activeDpoButton();
       this.searchInput = null;
-      this.showProducts = this.products.filter(producto => {
-        return producto.cantidad < producto.porden;
+      this.showProducts = this.products.filter(product => {
+        return product.quantity < product.reorder_point;
       });
     },
     dminFilter() {
       this.activeDminButton();
-      this.showProducts = this.products.filter(producto => {
-        return producto.cantidad < producto.minimo;
+      this.showProducts = this.products.filter(product => {
+        return product.quantity < product.minimum_stock;
       });
       // this.search();
     },
     negativeFilter() {
       this.activeNegativeButton();
-      this.showProducts = this.products.filter(producto => {
-        return producto.cantidad < 0;
+      this.showProducts = this.products.filter(product => {
+        return product.quantity < 0;
       });
     },
     activeTodosButton() {
@@ -180,16 +180,14 @@ export default {
     }
   },
   created() {
-    this.products = filteredProducts.map(product => product.product);
+    this.products = filteredProducts;
     this.showProducts = this.products;
+  },
+  mounted() {
+    this.$refs.searchbar.focus();
   },
   components: {
     ProductComponent
   }
 };
 </script>
-<style scoped>
-.row:hover {
-  background-color: #f3f3f3;
-}
-</style>

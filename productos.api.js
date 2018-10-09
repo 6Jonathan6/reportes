@@ -4281,9 +4281,9 @@ const response = [
       height: null,
       length: null,
       weight: null,
-      minimum_stock: null,
-      maximum_stock: null,
-      reorder_point: null,
+      minimum_stock: 30,
+      maximum_stock: 500,
+      reorder_point: 100,
       price_data: [
         {
           id: 26447,
@@ -4320,13 +4320,15 @@ const response = [
           }
         ]
       },
-      quantity: 16,
+      quantity: 120,
       images: null
     }
   }
 ];
 
-const filteredProducts = response.map(function(product) {
+const products = response.filter(product => "product" in product);
+
+const filteredProducts = products.map(function(product) {
   if (
     product.product.minimum_stock === null &&
     product.product.maximum_stock === null &&
@@ -4335,16 +4337,18 @@ const filteredProducts = response.map(function(product) {
     product.product.minimum_stock = 0;
     product.product.maximum_stock = 0;
     product.product.reorder_point = 0;
-    return product;
+    return product.product;
   } else if (product.product.minimum_stock === null) {
     product.product.minimum_stock = 0;
-    return product;
+    return product.product;
   } else if (product.maximum_stock === null) {
     product.product.maximum_stock === 0;
-    return product;
+    return product.product;
   } else if (product.reorder_point === null) {
     product.product.reorder_point = 0;
-    return product;
+    return product.product;
+  } else {
+    return product.product;
   }
 });
 
